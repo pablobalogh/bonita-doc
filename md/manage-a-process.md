@@ -6,7 +6,9 @@ This example shows you how to get a list of the deployed processes.
 
 The search options specify that the list is sorted by deployment date, the maximum number of results to list is 100, and the list starts with the first results (that is, the processes that were deployed first).
 ```java
-final ProcessAPI processAPI = TenantAPIAccessor.getProcessAPI(apiSession);
+final APIClient apiClient = new APIClient()
+apiClient.login("USERNAME", "PASSWORD")
+final ProcessAPI processAPI = apiClient.getProcessAPI();
 final SearchOptions searchOptions = new SearchOptionsBuilder(0, 100).sort(ProcessDeploymentInfoSearchDescriptor.DEPLOYMENT_DATE, Order.DESC).done();
 final SearchResult<ProcessDeploymentInfo> deploymentInfoResults = processAPI.searchProcessDeploymentInfos(searchOptions);
 ```
@@ -42,10 +44,10 @@ In this example, `createInstance` takes the process definition name, the process
 public void createInstance(String processDefinitionName, 
          String processVersion, 
          Map<String, Object> variables, 
-         APISession apiSession)  {
+         APIClient apiClient)  {
     ProcessAPI processAPI;
     try {
-        processAPI = TenantAPIAccessor.getProcessAPI(apiSession);
+        processAPI = apiClient.getProcessAPI();
         long processDefinitionId = processAPI.getProcessDefinitionId(processDefinitionName, processVersion);
         
         List<Operation> listOperations = new ArrayList<Operation>();
@@ -181,7 +183,6 @@ This example shows you how to list the open instances of a specified process.
 
 The process is specified by the processDefinitonID. The search options specify that a maximum of 100 items are listed, starting with the first one.
 ```
-final ProcessAPI processAPI = TenantAPIAccessor.getProcessAPI(apiSession);
 final SearchOptionsBuilder builder = new SearchOptionsBuilder(0, 100);
 builder.filter(ProcessInstanceSearchDescriptor.PROCESS_DEFINITION_ID, processDefinitionID);
 final SearchResult<ProcessInstance> processInstanceResults = processAPI.searchOpenProcessInstances(builder.done());
@@ -193,7 +194,6 @@ This example shows how to get the history for a case.
 
 A case is a process instance. To get the history, you retrieve the archived process instance, which is specified by processInstanceID.
 ```java
-final ProcessAPI processAPI = TenantAPIAccessor.getProcessAPI(apiSession);
 final ArchivedProcessInstance archivedProcessInstance = processAPI.getArchivedProcessInstance(processInstanceID);
 ```
 
@@ -203,7 +203,6 @@ This example shows how to get a list of archived process instances that meet a s
 
 Note that this type of query is only possible with archived process instances.
 ```java
-final ProcessAPI processAPI = TenantAPIAccessor.getProcessAPI(apiSession);
 final SearchOptionsBuilder builder = new SearchOptionsBuilder(0, 100);
 builder.filter(ArchivedProcessInstancesSearchDescriptor., );
 final SearchResult<ArchivedProcessInstance> archivedProcessInstanceResults = processAPI.searchArchivedProcessInstances(builder.done());
@@ -215,7 +214,6 @@ This example shows how to stop (or cancel) an active process instance.
 
 No further activities in this process instance are started.
 ```java
-final ProcessAPI processAPI = TenantAPIAccessor.getProcessAPI(apiSession);
 processAPI.cancelProcessInstance(processInstanceID);
 ```
 
@@ -291,6 +289,5 @@ A process is undeployed by deleting the processDefinition, specified by a proces
 
 After the process is undeployed, no new instance can be started. Existing instances continue to completion.
 ```java
-final ProcessAPI processAPI = TenantAPIAccessor.getProcessAPI(apiSession);
 processAPI.deleteProcessDefinition(processDefinitionId)
 ```
