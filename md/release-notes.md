@@ -39,6 +39,10 @@ In order to be compatible with Java 11, you must update the following plug-ins d
 ### New embedded AngularJS filter to resolve business object lazy references
 More info on how to use it [here](variables.md).
 
+## Packaging
+### LDAP synchronizer & cas single sign-on module
+The LDAP synchronizer & cas single sign-on module are now provided with the Bonita Subscription bundles, in the tools repository.
+
 ## Deprecation
 
 ### EJB
@@ -60,6 +64,9 @@ The Wildfly bundle was mainly used with the SQL server database. The Tomcat bund
 ### 32 bits installers
 32 bits installers for all platforms are no longer provided.
 
+### Deploy zip
+The BonitaSubscription-x.y.z-deploy.zip is no longer provided starting from Bonita 7.9.
+Please use the Tomcat bundle instead, or see the [Custom Deployment](deploy-bundle.md) page for more specific needs.
 
 ## Technology updates
 
